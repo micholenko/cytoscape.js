@@ -26040,10 +26040,12 @@
         if (lShapeInsideSrc) {
           // horizontal Z-shape (direction not respected)
           console.log('1');
-          var x = (posPts.x1 + posPts.x2) / 2;
-          var y1 = posPts.y1,
-              y2 = posPts.y2;
-          rs.segpts = [x, y1, x, y2];
+
+          var _y4 = posPts.y1 + d + (dIncludesNodeBody ? srcH / 2 * sgnL : 0);
+
+          var _x4 = posPts.x1,
+              _x5 = posPts.x2;
+          rs.segpts = [_x4, _y4, _x5, _y4];
         } else if (lShapeInsideTgt) {
           // vertical Z-shape (distance not respected)
           console.log('2');
@@ -26081,12 +26083,10 @@
         } else if (_lShapeInsideTgt) {
           // horizontal Z-shape (turn distance not respected)
           console.log('5');
-
-          var _x3 = (posPts.x1 + posPts.x2) / 2;
-
-          var _y2 = posPts.y1,
-              _y3 = posPts.y2;
-          rs.segpts = [_x3, _y2, _x3, _y3];
+          var x = (posPts.x1 + posPts.x2) / 2;
+          var y1 = posPts.y1,
+              y2 = posPts.y2;
+          rs.segpts = [x, y1, x, y2];
         } else {
           // L-shape (turn distance not respected, but works well for tree siblings)
           console.log('6');
@@ -26098,20 +26098,20 @@
       if (isVert) {
         console.log('7');
 
-        var _y5 = posPts.y1 + d + (dIncludesNodeBody ? srcH / 2 * sgnL : 0);
+        var _y4 = posPts.y1 + d + (dIncludesNodeBody ? srcH / 2 * sgnL : 0);
 
-        var _x6 = posPts.x1,
-            _x7 = posPts.x2;
-        rs.segpts = [_x6, _y5, _x7, _y5];
+        var _x4 = posPts.x1,
+            _x5 = posPts.x2;
+        rs.segpts = [_x4, _y4, _x5, _y4];
       } else {
         // horizontal
         console.log('8');
 
-        var _x8 = posPts.x1 + d + (dIncludesNodeBody ? srcW / 2 * sgnL : 0);
+        var _x3 = posPts.x1 + d + (dIncludesNodeBody ? srcW / 2 * sgnL : 0);
 
-        var _y6 = posPts.y1,
-            _y7 = posPts.y2;
-        rs.segpts = [_x8, _y6, _x8, _y7];
+        var _y2 = posPts.y1,
+            _y3 = posPts.y2;
+        rs.segpts = [_x3, _y2, _x3, _y3];
       }
     }
   };

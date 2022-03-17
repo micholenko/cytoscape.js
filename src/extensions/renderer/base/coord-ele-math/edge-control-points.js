@@ -343,13 +343,11 @@ BRp.findTaxiPoints = function( edge, pairInfo ){
 
       if( lShapeInsideSrc ){ // horizontal Z-shape (direction not respected)
         console.log('1')
-        let x = (posPts.x1 + posPts.x2)/2;
-        let { y1, y2 } = posPts;
+        var _y4 = posPts.y1 + d + (dIncludesNodeBody ? (srcH / 2) * sgnL : 0);
 
-        rs.segpts = [
-          x, y1,
-          x, y2
-        ];
+				var _x4 = posPts.x1,
+					_x5 = posPts.x2;
+				rs.segpts = [_x4, _y4, _x5, _y4];
       } else if( lShapeInsideTgt ){ // vertical Z-shape (distance not respected)
         console.log('2')
         let y = (posPts.y1 + posPts.y2)/2;
