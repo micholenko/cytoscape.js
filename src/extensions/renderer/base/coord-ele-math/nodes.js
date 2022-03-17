@@ -22,6 +22,7 @@ BRp.getNodeShape = function( node ){
 
   if( node.isParent() ){
     if( shape === 'rectangle'
+    || shape === 'ellipse'
     || shape === 'roundrectangle'
     || shape === 'round-rectangle'
     || shape === 'cutrectangle'

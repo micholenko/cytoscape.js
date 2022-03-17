@@ -9278,6 +9278,12 @@ elesfn$k.updateCompoundBounds = function () {
     pos.x = (-diffLeft + bb.x1 + bb.x2 + diffRight) / 2;
     _p.autoHeight = Math.max(bb.h, min.height.val);
     pos.y = (-diffTop + bb.y1 + bb.y2 + diffBottom) / 2;
+
+    if (parent.data('type') === 'process')
+    {
+      _p.autoWidth *= 1.43;
+      _p.autoHeight *= 1.43;
+    }
   }
 
   for (var i = 0; i < this.length; i++) {
@@ -23951,7 +23957,7 @@ BRp$7.getNodeShape = function (node) {
   }
 
   if (node.isParent()) {
-    if (shape === 'rectangle' || shape === 'roundrectangle' || shape === 'round-rectangle' || shape === 'cutrectangle' || shape === 'cut-rectangle' || shape === 'barrel') {
+    if (shape === 'rectangle' || shape === 'ellipse' || shape === 'roundrectangle' || shape === 'round-rectangle' || shape === 'cutrectangle' || shape === 'cut-rectangle' || shape === 'barrel') {
       return shape;
     } else {
       return 'rectangle';
