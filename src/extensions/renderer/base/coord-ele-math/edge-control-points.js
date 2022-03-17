@@ -407,14 +407,12 @@ BRp.findTaxiPoints = function( edge, pairInfo ){
     }
   } else { // ideal routing
     if( isVert ){
-      console.log('7')
-      let y = posPts.y1 + d + (dIncludesNodeBody ? srcH/2 * sgnL : 0);
-      let { x1, x2 } = posPts;
+      console.log('7');
+			var _y4 = posPts.y1 + d + (dIncludesNodeBody ? (srcH / 2) * sgnL : 0);
 
-      rs.segpts = [
-        x1, y,
-        x2, y
-      ];
+			var _x4 = posPts.x1,
+				_x5 = posPts.x2;
+			rs.segpts = [_x4, _y4, _x5, _y4];
     } else { // horizontal
       console.log('8')
       let x = posPts.x1 + d + (dIncludesNodeBody ? srcW/2 * sgnL : 0);
