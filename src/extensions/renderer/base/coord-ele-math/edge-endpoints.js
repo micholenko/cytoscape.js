@@ -280,7 +280,7 @@ BRp.findEndpoints = function( edge ){
   let edgeStart = math.shortenIntersection(
     intersect,
     p2,
-    r.arrowShapes[ srcArShape ].gap( edge ) + srcDist
+    r.arrowShapes[ srcArShape ].gap( edge ) - srcDist
   );
 
   rs.startX = edgeStart[0];

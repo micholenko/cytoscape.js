@@ -1,16 +1,16 @@
 /**
  * Copyright (c) 2016-2022, The Cytoscape Consortium.
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the “Software”), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
  * of the Software, and to permit persons to whom the Software is furnished to do
  * so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -1635,7 +1635,7 @@ var elesfn$3 = {
     var popFromOpenSet = function popFromOpenSet() {
       cMin = openSet.pop();
       cMinId = cMin.id();
-      openSetIds["delete"](cMinId);
+      openSetIds.delete(cMinId);
     };
 
     var isInOpenSet = function isInOpenSet(id) {
@@ -6940,7 +6940,7 @@ var elesfn$e = {
           eleClasses.add(cls);
           changedNow = true;
         } else if (!toggle || toggleUndefd && hasClass) {
-          eleClasses["delete"](cls);
+          eleClasses.delete(cls);
           changedNow = true;
         }
 
@@ -10967,7 +10967,7 @@ var elesfn$n = {
     var map = _p.map; // remove ele
 
     this[i] = undefined;
-    map["delete"](id);
+    map.delete(id);
     var unmergedLastEle = i === this.length - 1; // replace empty spot with last ele in collection
 
     if (this.length > 1 && !unmergedLastEle) {
@@ -14739,7 +14739,7 @@ styfn.applyContextStyle = function (cxtMeta, cxtStyle, ele) {
       } else {
         cxtProp = {
           name: diffPropName,
-          "delete": true
+          delete: true
         };
       }
     } // save cycles when the context prop doesn't need to be applied
@@ -14999,7 +14999,7 @@ styfn.applyParsedProperty = function (ele, parsedProp) {
     prop = parsedProp = this.parse(parsedProp.name, 'bezier', propIsBypass);
   }
 
-  if (prop["delete"]) {
+  if (prop.delete) {
     // delete the property and use the default value on falsey value
     style[prop.name] = undefined;
     checkTriggers();
@@ -18464,8 +18464,8 @@ var corefn$8 = {
       h: height
     };
   },
-  multiClickDebounceTime: function multiClickDebounceTime(_int) {
-    if (_int) this._private.multiClickDebounceTime = _int;else return this._private.multiClickDebounceTime;
+  multiClickDebounceTime: function multiClickDebounceTime(int) {
+    if (int) this._private.multiClickDebounceTime = int;else return this._private.multiClickDebounceTime;
     return this; // chaining
   }
 }; // aliases
@@ -22449,19 +22449,29 @@ BRp$3.findTaxiPoints = function (edge, pairInfo) {
 
       if (lShapeInsideSrc) {
         // horizontal Z-shape (direction not respected)
+        console.log('1');
         var x = (posPts.x1 + posPts.x2) / 2;
         var y1 = posPts.y1,
             y2 = posPts.y2;
         rs.segpts = [x, y1, x, y2];
       } else if (lShapeInsideTgt) {
         // vertical Z-shape (distance not respected)
+        console.log('2');
         var y = (posPts.y1 + posPts.y2) / 2;
         var x1 = posPts.x1,
             x2 = posPts.x2;
         rs.segpts = [x1, y, x2, y];
       } else {
         // L-shape fallback (turn distance not respected, but works well with tree siblings)
-        rs.segpts = [posPts.x1, posPts.y2];
+        console.log('3');
+
+        if (posPts.y2 - posPts.y1 < 85) {
+          var _y4 = posPts.y1 + d + (dIncludesNodeBody ? srcH / 2 * sgnL : 0);
+
+          var _x4 = posPts.x1,
+              _x5 = posPts.x2;
+          rs.segpts = [_x4, _y4, _x5, _y4];
+        } else rs.segpts = [posPts.x1, posPts.y2];
       }
     } else {
       // horizontal fallbacks
@@ -22471,6 +22481,8 @@ BRp$3.findTaxiPoints = function (edge, pairInfo) {
 
       if (_lShapeInsideSrc) {
         // vertical Z-shape (direction not respected)
+        console.log('4');
+
         var _y = (posPts.y1 + posPts.y2) / 2;
 
         var _x = posPts.x1,
@@ -22478,6 +22490,8 @@ BRp$3.findTaxiPoints = function (edge, pairInfo) {
         rs.segpts = [_x, _y, _x2, _y];
       } else if (_lShapeInsideTgt) {
         // horizontal Z-shape (turn distance not respected)
+        console.log('5');
+
         var _x3 = (posPts.x1 + posPts.x2) / 2;
 
         var _y2 = posPts.y1,
@@ -22485,24 +22499,29 @@ BRp$3.findTaxiPoints = function (edge, pairInfo) {
         rs.segpts = [_x3, _y2, _x3, _y3];
       } else {
         // L-shape (turn distance not respected, but works well for tree siblings)
+        console.log('6');
         rs.segpts = [posPts.x2, posPts.y1];
       }
     }
   } else {
     // ideal routing
     if (isVert) {
-      var _y4 = posPts.y1 + d + (dIncludesNodeBody ? srcH / 2 * sgnL : 0);
+      console.log('7');
 
-      var _x4 = posPts.x1,
-          _x5 = posPts.x2;
-      rs.segpts = [_x4, _y4, _x5, _y4];
+      var _y5 = posPts.y1 + d + (dIncludesNodeBody ? srcH / 2 * sgnL : 0);
+
+      var _x6 = posPts.x1,
+          _x7 = posPts.x2;
+      rs.segpts = [_x6, _y5, _x7, _y5];
     } else {
       // horizontal
-      var _x6 = posPts.x1 + d + (dIncludesNodeBody ? srcW / 2 * sgnL : 0);
+      console.log('8');
 
-      var _y5 = posPts.y1,
-          _y6 = posPts.y2;
-      rs.segpts = [_x6, _y5, _x6, _y6];
+      var _x8 = posPts.x1 + d + (dIncludesNodeBody ? srcW / 2 * sgnL : 0);
+
+      var _y6 = posPts.y1,
+          _y7 = posPts.y2;
+      rs.segpts = [_x8, _y6, _x8, _y7];
     }
   }
 };
@@ -23234,7 +23253,7 @@ BRp$4.findEndpoints = function (edge) {
   }
 
   var arrowStart = shortenIntersection(intersect, p2, r.arrowShapes[srcArShape].spacing(edge) + srcDist);
-  var edgeStart = shortenIntersection(intersect, p2, r.arrowShapes[srcArShape].gap(edge) + srcDist);
+  var edgeStart = shortenIntersection(intersect, p2, r.arrowShapes[srcArShape].gap(edge) - srcDist);
   rs.startX = edgeStart[0];
   rs.startY = edgeStart[1];
   rs.arrowStartX = arrowStart[0];
@@ -27235,7 +27254,7 @@ function () {
     key: "deleteIdForKey",
     value: function deleteIdForKey(key, id) {
       if (key != null) {
-        this.getIdsFor(key)["delete"](id);
+        this.getIdsFor(key).delete(id);
       }
     }
   }, {
@@ -27263,7 +27282,7 @@ function () {
       var id = ele.id();
       var prevKey = this.keyForId.get(id);
       this.deleteIdForKey(prevKey, id);
-      this.keyForId["delete"](id);
+      this.keyForId.delete(id);
     }
   }, {
     key: "keyHasChangedFor",
@@ -27345,7 +27364,7 @@ function () {
   }, {
     key: "deleteCache",
     value: function deleteCache(key, lvl) {
-      this.getCachesAt(lvl)["delete"](key);
+      this.getCachesAt(lvl).delete(key);
     }
   }, {
     key: "delete",
@@ -31872,7 +31891,7 @@ sheetfn.appendToStyle = function (style) {
   return style;
 };
 
-var version = "3.21.0";
+var version = "snapshot";
 
 var cytoscape = function cytoscape(options) {
   // if no options specified, use default
