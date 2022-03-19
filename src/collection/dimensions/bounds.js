@@ -173,6 +173,12 @@ elesfn.updateCompoundBounds = function(force = false){
 
     _p.autoHeight = Math.max(bb.h, min.height.val);
     pos.y = (- diffTop + bb.y1 + bb.y2 + diffBottom) / 2;
+
+    if (parent.data('type') === 'process')
+    {
+      _p.autoWidth =  Math.max((bb.w / 1.43) * 2, min.width.val);
+      _p.autoHeight = Math.max((bb.h / 1.43) * 2, min.height.val);
+    }
   }
 
   for( let i = 0; i < this.length; i++ ){

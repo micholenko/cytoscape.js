@@ -9281,8 +9281,8 @@ elesfn$k.updateCompoundBounds = function () {
 
     if (parent.data('type') === 'process')
     {
-      _p.autoWidth *= 1.43;
-      _p.autoHeight *= 1.43;
+      _p.autoWidth =  Math.max((bb.w / 1.43) * 2, min.width.val);
+      _p.autoHeight = Math.max((bb.h / 1.43) * 2, min.height.val);
     }
   }
 
