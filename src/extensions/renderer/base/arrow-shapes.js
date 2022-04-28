@@ -339,6 +339,41 @@ BRp.registerArrowShapes = function(){
     }
   } );
 
+  defineArrowShape('triangle-inner-circle', {
+    radius: 0.06,
+    pointsTr: [
+      0, -0.15,
+      0.15, -0.45,
+      -0.15, -0.45,
+      0, -0.15
+    ],
+
+    draw: function draw(context, size, angle, translation, edgeWidth) {
+      var triPts = transformPoints(this.pointsTr, size, angle, translation);
+      renderer.arrowShapeImpl(this.name)(context, triPts, translation.x, translation.y, this.radius * size);
+    }
+  });
+  defineArrowShape('triangle-inner-triangle', {
+    points: [
+      0, 0,
+      0.15, -0.3,
+      -0.15, -0.3,
+      0, 0
+    ],
+    innerPoints: [
+      0, -0.13,
+      -0.05, -0.23,
+      0.05, -0.23,
+      0, -0.13
+    ],
+    
+    draw: function draw(context, size, angle, translation, edgeWidth) {
+      var triPts = transformPoints(this.points, size, angle, translation);
+      var triInnPts = transformPoints(this.innerPoints, size, angle, translation);
+      renderer.arrowShapeImpl(this.name)(context, triPts, triInnPts);
+    }
+  });
+
 };
 
 export default BRp;

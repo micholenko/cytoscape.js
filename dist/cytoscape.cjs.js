@@ -9279,10 +9279,9 @@ elesfn$k.updateCompoundBounds = function () {
     _p.autoHeight = Math.max(bb.h, min.height.val);
     pos.y = (-diffTop + bb.y1 + bb.y2 + diffBottom) / 2;
 
-    if (parent.data('type') === 'process')
-    {
-      _p.autoWidth =  Math.max((bb.w / 1.43) * 2, min.width.val);
-      _p.autoHeight = Math.max((bb.h / 1.43) * 2, min.height.val);
+    if (parent.data('type') === 'process') {
+      _p.autoWidth = Math.max(bb.w / 1.43 * 2, min.width.val);
+      _p.autoHeight = Math.max(bb.h / 1.43 * 2, min.height.val);
     }
   }
 
@@ -16176,7 +16175,7 @@ var styfn$6 = {};
       enums: ['include', 'exclude']
     },
     arrowShape: {
-      enums: ['tee', 'triangle', 'triangle-tee', 'circle-triangle', 'triangle-cross', 'triangle-backcurve', 'vee', 'square', 'circle', 'diamond', 'chevron', 'none']
+      enums: ['tee', 'triangle', 'triangle-tee', 'circle-triangle', 'triangle-cross', 'triangle-backcurve', 'vee', 'square', 'circle', 'diamond', 'chevron', 'none', 'triangle-inner-triangle', 'triangle-inner-circle']
     },
     arrowFill: {
       enums: ['filled', 'hollow']
@@ -21639,6 +21638,23 @@ BRp.registerArrowShapes = function () {
     points: [0, 0, -0.15, -0.15, -0.1, -0.2, 0, -0.1, 0.1, -0.2, 0.15, -0.15],
     gap: function gap(edge) {
       return 0.95 * edge.pstyle('width').pfValue * edge.pstyle('arrow-scale').value;
+    }
+  });
+  defineArrowShape('triangle-inner-circle', {
+    radius: 0.06,
+    pointsTr: [0, -0.15, 0.15, -0.45, -0.15, -0.45, 0, -0.15],
+    draw: function draw(context, size, angle, translation, edgeWidth) {
+      var triPts = transformPoints(this.pointsTr, size, angle, translation);
+      renderer.arrowShapeImpl(this.name)(context, triPts, translation.x, translation.y, this.radius * size);
+    }
+  });
+  defineArrowShape('triangle-inner-triangle', {
+    points: [0, 0, 0.15, -0.3, -0.15, -0.3, 0, 0],
+    innerPoints: [0, -0.13, -0.05, -0.23, 0.05, -0.23, 0, -0.13],
+    draw: function draw(context, size, angle, translation, edgeWidth) {
+      var triPts = transformPoints(this.points, size, angle, translation);
+      var triInnPts = transformPoints(this.innerPoints, size, angle, translation);
+      renderer.arrowShapeImpl(this.name)(context, triPts, triInnPts);
     }
   });
 };
@@ -28623,6 +28639,63 @@ function circle(context, rx, ry, r) {
   context.arc(rx, ry, r, 0, Math.PI * 2, false);
 }
 
+function triangleInnerCircle(context, trianglePoints, rx, ry, r) {
+  var triangleUp = 0.15;
+
+  if (context.beginPath) {
+    context.beginPath();
+  }
+
+  for (var i = r; i > 0; i -= 0.01) {
+    context.arc(rx, ry - 0.20, r - i, 0, Math.PI * 2, false);
+  }
+
+  context.lineTo(rx - 0.01, ry - 0.20);
+  var triPts = trianglePoints;
+  var firstTrPt = triPts[0];
+  context.moveTo(firstTrPt.x, firstTrPt.y + triangleUp);
+
+  for (var i = 0; i < triPts.length; i++) {
+    var pt = triPts[i];
+    context.lineTo(pt.x, pt.y + triangleUp);
+  }
+
+  if (context.closePath) {
+    context.closePath();
+  }
+}
+
+function triangleInnerTriangle(context, trianglePoints, innerTrianglePoints) {
+  var triPts = trianglePoints;
+  var firstTrPt = triPts[0];
+  context.moveTo(firstTrPt.x, firstTrPt.y);
+
+  for (var i = 0; i < triPts.length; i++) {
+    var pt = triPts[i];
+    context.lineTo(pt.x, pt.y);
+  }
+
+  triPts = innerTrianglePoints;
+  firstTrPt = triPts[0];
+  context.moveTo(firstTrPt.x + 0.023, firstTrPt.y - 0.05);
+
+  for (var i = 0; i < 0.06; i += 0.01) {
+    var pt0 = triPts[0];
+    var pt1 = triPts[1];
+    var pt2 = triPts[2];
+    context.lineTo(pt0.x, pt0.y - i);
+    context.lineTo(pt1.x + i, pt1.y + i);
+    context.lineTo(pt2.x - i, pt2.y + i);
+  }
+
+  context.moveTo(firstTrPt.x, firstTrPt.y);
+
+  for (var i = 0; i < triPts.length; i++) {
+    var pt = triPts[i];
+    context.lineTo(pt.x, pt.y);
+  }
+}
+
 CRp.arrowShapeImpl = function (name) {
   return (impl || (impl = {
     'polygon': polygon,
@@ -28630,7 +28703,9 @@ CRp.arrowShapeImpl = function (name) {
     'triangle-tee': triangleTee,
     'circle-triangle': circleTriangle,
     'triangle-cross': triangleTee,
-    'circle': circle
+    'circle': circle,
+    'triangle-inner-circle': triangleInnerCircle,
+    'triangle-inner-triangle': triangleInnerTriangle
   }))[name];
 };
 
