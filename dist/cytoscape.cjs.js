@@ -22471,8 +22471,6 @@ BRp$3.findTaxiPoints = function (edge, pairInfo) {
 
       if (lShapeInsideSrc) {
         // horizontal Z-shape (direction not respected)
-        console.log('1');
-
         var _y4 = posPts.y1 + d + (dIncludesNodeBody ? srcH / 2 * sgnL : 0);
 
         var _x4 = posPts.x1,
@@ -22480,15 +22478,12 @@ BRp$3.findTaxiPoints = function (edge, pairInfo) {
         rs.segpts = [_x4, _y4, _x5, _y4];
       } else if (lShapeInsideTgt) {
         // vertical Z-shape (distance not respected)
-        console.log('2');
         var y = (posPts.y1 + posPts.y2) / 2;
         var x1 = posPts.x1,
             x2 = posPts.x2;
         rs.segpts = [x1, y, x2, y];
       } else {
         // L-shape fallback (turn distance not respected, but works well with tree siblings)
-        console.log('3');
-
         if (posPts.y2 - posPts.y1 < 85) {
           var _y4 = posPts.y1 + d + (dIncludesNodeBody ? srcH / 2 * sgnL : 0);
 
@@ -22505,8 +22500,6 @@ BRp$3.findTaxiPoints = function (edge, pairInfo) {
 
       if (_lShapeInsideSrc) {
         // vertical Z-shape (direction not respected)
-        console.log('4');
-
         var _y = (posPts.y1 + posPts.y2) / 2;
 
         var _x = posPts.x1,
@@ -22514,22 +22507,18 @@ BRp$3.findTaxiPoints = function (edge, pairInfo) {
         rs.segpts = [_x, _y, _x2, _y];
       } else if (_lShapeInsideTgt) {
         // horizontal Z-shape (turn distance not respected)
-        console.log('5');
         var x = (posPts.x1 + posPts.x2) / 2;
         var y1 = posPts.y1,
             y2 = posPts.y2;
         rs.segpts = [x, y1, x, y2];
       } else {
         // L-shape (turn distance not respected, but works well for tree siblings)
-        console.log('6');
         rs.segpts = [posPts.x2, posPts.y1];
       }
     }
   } else {
     // ideal routing
     if (isVert) {
-      console.log('7');
-
       var _y4 = posPts.y1 + d + (dIncludesNodeBody ? srcH / 2 * sgnL : 0);
 
       var _x4 = posPts.x1,
@@ -22537,8 +22526,6 @@ BRp$3.findTaxiPoints = function (edge, pairInfo) {
       rs.segpts = [_x4, _y4, _x5, _y4];
     } else {
       // horizontal
-      console.log('8');
-
       var _x3 = posPts.x1 + d + (dIncludesNodeBody ? srcW / 2 * sgnL : 0);
 
       var _y2 = posPts.y1,
